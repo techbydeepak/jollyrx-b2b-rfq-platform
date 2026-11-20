@@ -1,0 +1,94 @@
+/*
+ * JollyRx – Internal Plant Vault
+ * Form: Plant_Master
+ * Purpose: Confidential internal plant repository with 8 standard fields
+ * Security: Private access only; no public reports; report actions decoupled.
+ */
+
+form Plant_Master
+{
+	displayname = "Plant Master"
+	success message = "Plant Record Added Successfully"
+
+	// --- Confidential Fields (Restricted to Internal Authorized Roles) ---
+	Real_Plant_Name
+	(
+		type = text
+		displayname = "Real Plant Name"
+		maxchar = 100
+		mandatory = true
+	)
+
+	Factory_Address
+	(
+		type = textarea
+		displayname = "Factory Address"
+		maxchar = 255
+		mandatory = true
+	)
+
+	License_No
+	(
+		type = text
+		displayname = "License No"
+		maxchar = 50
+		mandatory = true
+	)
+
+	// --- Masked / Public Attributes ---
+	Masked_Node_ID
+	(
+		type = text
+		displayname = "Masked Node ID"
+		maxchar = 20
+		mandatory = true
+	)
+
+	Molecule
+	(
+		type = text
+		displayname = "Molecule"
+		maxchar = 100
+		mandatory = true
+	)
+
+	Dosage_Form
+	(
+		type = picklist
+		displayname = "Dosage Form"
+		values = {"Tablets", "Capsules", "Syrup", "Injectables"}
+		mandatory = true
+	)
+
+	Certification
+	(
+		type = picklist
+		displayname = "Certification"
+		values = {"WHO-GMP", "Schedule M", "EU-GMP", "US-FDA"}
+		mandatory = true
+	)
+
+	MOQ
+	(
+		type = number
+		displayname = "MOQ"
+		mandatory = true
+	)
+}
+
+/* Default Internal Report (Strictly Private - No Custom Report Action Glitches) */
+list Plant_Master_Report
+{
+	displayname = "Plant Master Records (Internal)"
+	show all rows from Plant_Master
+	(
+		Masked_Node_ID as "Masked Node ID"
+		Molecule as "Molecule"
+		Dosage_Form as "Dosage Form"
+		Certification as "Certification"
+		MOQ as "MOQ"
+		Real_Plant_Name as "Real Plant Name"
+		Factory_Address as "Factory Address"
+		License_No as "License No"
+	)
+}

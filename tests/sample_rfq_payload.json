@@ -1,0 +1,6 @@
+﻿{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "QA Test Buyer",
+  "buyer_email": "qa.test@example.com",
+  "target_quantity": 5000
+}

@@ -1,0 +1,34 @@
+/*
+ * Deluge Workflow for RFQ_Inquiries
+ * Application: JollyRx Internal Plant Vault
+ * 
+ * Event 1: Form Workflows -> RFQ_Inquiries -> Created -> Before Submit (on validate)
+ * Event 2: Form Workflows -> RFQ_Inquiries -> Created -> After Submit (on success)
+ */
+
+// --------------------------------------------------------------------------
+// 1. ON VALIDATE (Ensures Target Quantity meets the Plant's configured MOQ)
+// --------------------------------------------------------------------------
+/*
+plantRecord = Plant_Master[Masked_Node_ID == input.Masked_Node_ID];
+if(plantRecord.count() > 0)
+{
+    if(input.Target_Quantity < plantRecord.MOQ)
+    {
+        alert "Target quantity (" + input.Target_Quantity + ") is below the required Minimum Order Quantity (" + plantRecord.MOQ + ") for " + input.Masked_Node_ID + ".";
+        cancel submit;
+    }
+}
+*/
+
+// --------------------------------------------------------------------------
+// 2. ON SUCCESS (Auto-populate Submission Date and default Status to 'New')
+// --------------------------------------------------------------------------
+// Set current system timestamp
+input.Submission_Date = zoho.currenttime;
+
+// Guarantee Status is initialized to 'New' if not already set
+if(input.Status == null || input.Status == "")
+{
+    input.Status = "New";
+}

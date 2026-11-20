@@ -1,0 +1,23 @@
+# Environment variables & secrets (CRITICAL: Never commit)
+.env
+.env.*
+*.env
+server/.env
+server/.env.*
+!.env.example
+!server/.env.example
+
+# Dependencies
+node_modules/
+server/node_modules/
+package-lock.json
+server/package-lock.json
+
+# Vercel build cache
+.vercel
+
+# Operating System & Logs
+.DS_Store
+Thumbs.db
+*.log
+*.tmp

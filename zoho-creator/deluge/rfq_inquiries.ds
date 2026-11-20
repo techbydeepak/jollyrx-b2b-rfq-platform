@@ -1,0 +1,69 @@
+/*
+ * JollyRx – Internal Plant Vault
+ * Form: RFQ_Inquiries
+ * Purpose: Secure B2B buyer inquiries routed from Zoho Commerce storefront
+ */
+
+form RFQ_Inquiries
+{
+	displayname = "RFQ Inquiries"
+	success message = "Quote Request Submitted Successfully"
+
+	Buyer_Name
+	(
+		type = text
+		displayname = "Buyer Name"
+		maxchar = 100
+		mandatory = true
+	)
+
+	Buyer_Email
+	(
+		type = email
+		displayname = "Buyer Email"
+		mandatory = true
+	)
+
+	Target_Quantity
+	(
+		type = number
+		displayname = "Target Quantity"
+		mandatory = true
+	)
+
+	Masked_Node_ID
+	(
+		type = text
+		displayname = "Masked Node ID"
+		maxchar = 20
+		mandatory = true
+	)
+
+	Submission_Date
+	(
+		type = datetime
+		displayname = "Submission Date"
+	)
+
+	Status
+	(
+		type = picklist
+		displayname = "Status"
+		values = {"New", "Under Review", "Quoted", "Rejected"}
+		default = "New"
+	)
+}
+
+list RFQ_Inquiries_Report
+{
+	displayname = "All RFQ Inquiries (Internal)"
+	show all rows from RFQ_Inquiries
+	(
+		Submission_Date as "Submission Date"
+		Status as "Status"
+		Masked_Node_ID as "Masked Node ID"
+		Target_Quantity as "Target Quantity"
+		Buyer_Name as "Buyer Name"
+		Buyer_Email as "Buyer Email"
+	)
+}

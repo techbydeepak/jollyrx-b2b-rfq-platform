@@ -1,0 +1,120 @@
+### =========================================================================
+### JollyRx – Automated RFQ Test Suite
+### Target: Local Proxy (http://localhost:3000) & Zoho Flow Webhook
+### =========================================================================
+
+### 1. Health Check Endpoint
+GET http://localhost:3000/api/health
+
+### 2. Assignment Test 1 (NODE-GJ-01 / Paracetamol)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "QA Test Buyer",
+  "buyer_email": "qa.test@example.com",
+  "target_quantity": 5000
+}
+
+### 3. Assignment Test 2 (NODE-MP-03 / Amoxicillin)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-MP-03",
+  "buyer_name": "QA Test Buyer 2",
+  "buyer_email": "qa.test2@example.com",
+  "target_quantity": 10000
+}
+
+### 4. Edge Case: Missing Required Fields (Should return HTTP 400)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "",
+  "buyer_email": "qa.test@example.com",
+  "target_quantity": 5000
+}
+
+### 5. Edge Case: Invalid Email Format (Should return HTTP 400)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "QA Test Buyer",
+  "buyer_email": "invalid-email-format",
+  "target_quantity": 5000
+}
+
+### 6. Edge Case: Zero or Negative Quantity (Should return HTTP 400)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "QA Test Buyer",
+  "buyer_email": "qa.test@example.com",
+  "target_quantity": 0
+}
+
+### 7. Edge Case: Unknown Masked Node ID (Should return HTTP 400)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-INVALID-99",
+  "buyer_name": "QA Test Buyer",
+  "buyer_email": "qa.test@example.com",
+  "target_quantity": 5000
+}
+
+### 8. Final End-to-End Verification Test (AG Final Verification 2)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-MP-03",
+  "buyer_name": "AG Final Verification 2",
+  "buyer_email": "ag.final2@example.com",
+  "target_quantity": 10000
+}
+
+### 9. Deluge Workflow Verification Test (AG Final Workflow Test 2)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-MP-03",
+  "buyer_name": "AG Final Workflow Test 2",
+  "buyer_email": "ag.workflowtest2@example.com",
+  "target_quantity": 10000
+}
+
+### 10. Storefront Proxy Verification Test (Storefront Proxy Test)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "Storefront Proxy Test",
+  "buyer_email": "storefront.test@example.com",
+  "target_quantity": 5000
+}
+
+### 11. Edge Case: Bot Honeypot Trap (Should return HTTP 200 silent discard)
+POST http://localhost:3000/api/rfq
+Content-Type: application/json
+
+{
+  "masked_node_id": "NODE-GJ-01",
+  "buyer_name": "Spam Bot",
+  "buyer_email": "bot@spammer.org",
+  "target_quantity": 5000,
+  "company_fax": "555-0199"
+}
+
+

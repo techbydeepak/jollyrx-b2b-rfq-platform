@@ -1,0 +1,92 @@
+{
+  "form_name": "Plant_Master",
+  "display_name": "Plant Master",
+  "description": "Internal Confidential Plant Vault - JollyRx",
+  "fields": [
+    {
+      "field_name": "Real_Plant_Name",
+      "display_name": "Real Plant Name",
+      "type": "text",
+      "mandatory": true,
+      "confidential": true,
+      "access": "internal_admin_only",
+      "description": "Confidential legal entity name of the manufacturing facility"
+    },
+    {
+      "field_name": "Factory_Address",
+      "display_name": "Factory Address",
+      "type": "textarea",
+      "mandatory": true,
+      "confidential": true,
+      "access": "internal_admin_only",
+      "description": "Confidential physical address of the manufacturing site"
+    },
+    {
+      "field_name": "License_No",
+      "display_name": "License No",
+      "type": "text",
+      "mandatory": true,
+      "unique": true,
+      "confidential": true,
+      "access": "internal_admin_only",
+      "description": "Confidential regulatory drug manufacturing license number"
+    },
+    {
+      "field_name": "Masked_Node_ID",
+      "display_name": "Masked Node ID",
+      "type": "text",
+      "mandatory": true,
+      "unique": true,
+      "confidential": false,
+      "access": "internal_and_public",
+      "description": "Publicly exposed capability token (e.g. NODE-BD-01)"
+    },
+    {
+      "field_name": "Molecule",
+      "display_name": "Molecule",
+      "type": "text",
+      "mandatory": true,
+      "confidential": false,
+      "access": "internal_and_public",
+      "description": "Active Pharmaceutical Ingredient / Generic Drug Name"
+    },
+    {
+      "field_name": "Dosage_Form",
+      "display_name": "Dosage Form",
+      "type": "picklist",
+      "options": ["Tablets", "Capsules", "Syrup", "Injectables"],
+      "mandatory": true,
+      "confidential": false,
+      "access": "internal_and_public",
+      "description": "Pharmaceutical formulation presentation"
+    },
+    {
+      "field_name": "Certification",
+      "display_name": "Certification",
+      "type": "picklist",
+      "options": ["WHO-GMP", "Schedule M", "EU-GMP", "US-FDA"],
+      "mandatory": true,
+      "confidential": false,
+      "access": "internal_and_public",
+      "description": "Regulatory quality certification standard"
+    },
+    {
+      "field_name": "MOQ",
+      "display_name": "MOQ",
+      "type": "number",
+      "mandatory": true,
+      "confidential": false,
+      "access": "internal_and_public",
+      "description": "Minimum Order Quantity in commercial units"
+    }
+  ],
+  "security_rules": {
+    "public_access": false,
+    "public_reports_enabled": false,
+    "restricted_fields": [
+      "Real_Plant_Name",
+      "Factory_Address",
+      "License_No"
+    ]
+  }
+}

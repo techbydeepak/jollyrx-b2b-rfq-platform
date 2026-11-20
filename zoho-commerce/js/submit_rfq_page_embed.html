@@ -1,0 +1,297 @@
+<!-- =========================================================================
+     JollyRx – B2B Pharma CDMO
+     Secure Storefront RFQ Component: JollyRx_RFQ
+     Target: Zoho Commerce "Submit RFQ" Page (Aura Theme)
+     Security: Calls backend proxy /api/rfq. No Zoho API secrets in frontend DOM.
+     ========================================================================= -->
+
+<div id="jollyrx-rfq-container" class="jollyrx-rfq-card">
+  <div class="jollyrx-rfq-header">
+    <div class="jollyrx-badge">Confidential CDMO Network</div>
+    <h3>Request for Quote (RFQ)</h3>
+    <p>Submit your commercial batch requirements. Manufacturer physical identity is strictly preserved under masked node IDs.</p>
+  </div>
+
+  <form id="JollyRx_RFQ" novalidate>
+    <!-- Anti-bot Honeypot field (hidden from genuine users) -->
+    <div style="display:none !important;" aria-hidden="true">
+      <input type="text" name="company_fax" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- Field 1: Buyer Name -->
+    <div class="jollyrx-form-group">
+      <label for="jollyrx_buyer_name">Buyer / Contact Name <span class="req">*</span></label>
+      <input type="text" id="jollyrx_buyer_name" name="buyer_name" placeholder="e.g. Dr. Sarah Jenkins" required />
+      <span class="jollyrx-field-error" id="err-name"></span>
+    </div>
+
+    <!-- Field 2: Buyer Email -->
+    <div class="jollyrx-form-group">
+      <label for="jollyrx_buyer_email">Commercial Business Email <span class="req">*</span></label>
+      <input type="email" id="jollyrx_buyer_email" name="buyer_email" placeholder="e.g. procurement@acmepharma.com" required />
+      <span class="jollyrx-field-error" id="err-email"></span>
+    </div>
+
+    <!-- Field 3: Masked Node ID -->
+    <div class="jollyrx-form-group">
+      <label for="jollyrx_masked_node">Target Manufacturing Node <span class="req">*</span></label>
+      <select id="jollyrx_masked_node" name="masked_node_id" required>
+        <option value="">-- Select Masked Node --</option>
+        <option value="NODE-GJ-01">NODE-GJ-01 (Paracetamol - Tablets - WHO-GMP - MOQ 10,000)</option>
+        <option value="NODE-MH-02">NODE-MH-02 (Metformin - Tablets - Schedule M - MOQ 5,000)</option>
+        <option value="NODE-MP-03">NODE-MP-03 (Amoxicillin - Capsules - WHO-GMP - MOQ 8,000)</option>
+      </select>
+      <span class="jollyrx-field-error" id="err-node"></span>
+    </div>
+
+    <!-- Field 4: Target Quantity -->
+    <div class="jollyrx-form-group">
+      <label for="jollyrx_target_qty">Requested Batch Quantity (Units) <span class="req">*</span></label>
+      <input type="number" id="jollyrx_target_qty" name="target_quantity" min="1" placeholder="e.g. 15000" required />
+      <span class="jollyrx-field-error" id="err-qty"></span>
+    </div>
+
+    <!-- Notification Alert Box -->
+    <div id="jollyrx-alert-box" style="display: none;"></div>
+
+    <!-- Submit Action Button -->
+    <div class="jollyrx-form-actions">
+      <button type="submit" id="jollyrx_submit_btn" class="jollyrx-btn-primary">
+        <span id="btn-text">Submit Request for Quote</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<style>
+  .jollyrx-rfq-card {
+    max-width: 620px;
+    margin: 25px auto;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    border: 1px solid #e2e8f0;
+    box-sizing: border-box;
+    text-align: left;
+  }
+  .jollyrx-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #e8f4fd;
+    color: #0b63b8;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .jollyrx-rfq-header h3 {
+    margin: 0 0 8px 0;
+    font-size: 22px;
+    color: #1a202c;
+    font-weight: 700;
+  }
+  .jollyrx-rfq-header p {
+    margin: 0 0 22px 0;
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.45;
+  }
+  .jollyrx-form-group {
+    margin-bottom: 18px;
+  }
+  .jollyrx-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 6px;
+  }
+  .jollyrx-form-group .req {
+    color: #e53e3e;
+  }
+  .jollyrx-form-group input,
+  .jollyrx-form-group select {
+    width: 100%;
+    padding: 11px 13px;
+    font-size: 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .jollyrx-form-group input:focus,
+  .jollyrx-form-group select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+  }
+  .jollyrx-field-error {
+    display: block;
+    font-size: 12px;
+    color: #e53e3e;
+    margin-top: 4px;
+    min-height: 16px;
+  }
+  .jollyrx-btn-primary {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #0d6efd;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .jollyrx-btn-primary:hover {
+    background: #0b5ed7;
+  }
+  .jollyrx-btn-primary:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+  }
+  #jollyrx-alert-box {
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+  .jollyrx-alert-success {
+    background: #def7ec;
+    color: #03543f;
+    border: 1px solid #bcf0da;
+  }
+  .jollyrx-alert-error {
+    background: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #fbd5d5;
+  }
+</style>
+
+<script>
+(function() {
+  // Pre-fill Node ID if buyer clicked "Request Quote" on a product card (?node=NODE-GJ-01)
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var nodeParam = params.get('node') || params.get('Masked_Node_ID');
+    if (nodeParam && document.getElementById('jollyrx_masked_node')) {
+      document.getElementById('jollyrx_masked_node').value = nodeParam.trim();
+    }
+  } catch(e) {}
+
+  var form = document.getElementById('JollyRx_RFQ');
+  if (!form) return;
+
+  // Endpoint configuration:
+  // Points to backend proxy URL (set via window.JOLLYRX_BACKEND_API or relative /api/rfq).
+  // Automatically defaults to http://localhost:3000/api/rfq for local testing / file previews.
+  // NEVER exposes the Zoho Flow webhook URL or zapikey in frontend source.
+  var BACKEND_API = window.JOLLYRX_BACKEND_API || (
+    (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' || !window.location.hostname))
+      ? "http://localhost:3000/api/rfq"
+      : "/api/rfq"
+  );
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var nameInput = document.getElementById('jollyrx_buyer_name');
+    var emailInput = document.getElementById('jollyrx_buyer_email');
+    var nodeInput = document.getElementById('jollyrx_masked_node');
+    var qtyInput = document.getElementById('jollyrx_target_qty');
+    var alertBox = document.getElementById('jollyrx-alert-box');
+    var submitBtn = document.getElementById('jollyrx_submit_btn');
+    var btnText = document.getElementById('btn-text');
+
+    // Reset feedback
+    document.getElementById('err-name').innerText = '';
+    document.getElementById('err-email').innerText = '';
+    document.getElementById('err-node').innerText = '';
+    document.getElementById('err-qty').innerText = '';
+    alertBox.style.display = 'none';
+
+    var isValid = true;
+    var nameVal = nameInput.value.trim();
+    var emailVal = emailInput.value.trim();
+    var nodeVal = nodeInput.value.trim();
+    var qtyVal = parseInt(qtyInput.value, 10);
+
+    if (!nameVal || nameVal.length < 2) {
+      document.getElementById('err-name').innerText = 'Please enter a valid Buyer Name (minimum 2 characters).';
+      isValid = false;
+    }
+
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal || !emailPattern.test(emailVal)) {
+      document.getElementById('err-email').innerText = 'Please enter a valid commercial business email address.';
+      isValid = false;
+    }
+
+    if (!nodeVal) {
+      document.getElementById('err-node').innerText = 'Please select a Masked Node ID.';
+      isValid = false;
+    }
+
+    if (isNaN(qtyVal) || qtyVal <= 0) {
+      document.getElementById('err-qty').innerText = 'Requested Quantity must be greater than zero.';
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    submitBtn.disabled = true;
+    btnText.innerText = 'Submitting Quote Request...';
+
+    var honeypotInput = form.querySelector('input[name="company_fax"]');
+    var honeypotVal = honeypotInput ? honeypotInput.value : '';
+
+    // Payload formatted in schema expected by the ingestion proxy
+    var payload = {
+      masked_node_id: nodeVal,
+      buyer_name: nameVal,
+      buyer_email: emailVal,
+      target_quantity: qtyVal,
+      company_fax: honeypotVal
+    };
+
+    fetch(BACKEND_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) {
+      return res.json().then(function(data) {
+        if (!res.ok) {
+          throw new Error(data.error || 'Server returned status ' + res.status);
+        }
+        return data;
+      });
+    })
+    .then(function(data) {
+      alertBox.className = 'jollyrx-alert-success';
+      alertBox.innerHTML = '<strong>Inquiry Registered!</strong> Your RFQ for <strong>' + nodeVal + '</strong> (' + qtyVal.toLocaleString() + ' units) has been recorded in the JollyRx Vault. Our procurement team will respond to ' + emailVal + '.';
+      alertBox.style.display = 'block';
+      form.reset();
+    })
+    .catch(function(err) {
+      console.error('[JollyRx Submit Error]', err);
+      alertBox.className = 'jollyrx-alert-error';
+      alertBox.innerHTML = '<strong>Submission Error:</strong> ' + (err.message || 'Unable to route inquiry. Please try again.');
+      alertBox.style.display = 'block';
+    })
+    .finally(function() {
+      submitBtn.disabled = false;
+      btnText.innerText = 'Submit Request for Quote';
+    });
+  });
+})();
+</script>
