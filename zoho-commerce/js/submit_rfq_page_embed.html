@@ -189,13 +189,13 @@
   if (!form) return;
 
   // Endpoint configuration:
-  // Points to backend proxy URL (set via window.JOLLYRX_BACKEND_API or relative /api/rfq).
-  // Automatically defaults to http://localhost:3000/api/rfq for local testing / file previews.
+  // Points to backend proxy URL (set via window.JOLLYRX_BACKEND_API or defaults below).
+  // Defaults to deployed Vercel backend for cloud storefront, or localhost:3000 for local testing.
   // NEVER exposes the Zoho Flow webhook URL or zapikey in frontend source.
   var BACKEND_API = window.JOLLYRX_BACKEND_API || (
     (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' || !window.location.hostname))
       ? "http://localhost:3000/api/rfq"
-      : "/api/rfq"
+      : "https://jollyrx-b2b-rfq-platform.vercel.app/api/rfq"
   );
 
   form.addEventListener('submit', function(e) {
