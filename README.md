@@ -240,7 +240,20 @@ Use the test suite in `tests/api_test.http` (executable via VS Code REST Client 
 8. **Bot Honeypot Trap:** $\to$ Returns HTTP 200 silent discard.
 
 ### End-to-End Storefront Verification
-1. Open the published Zoho Commerce storefront at `/submit-rfq`.
+1. Open the published Zoho Commerce storefront at `https://demo-60096945966.zohoecommerce.in/page/submit-rfq`.
 2. Fill out the form with buyer details and select a node.
 3. Submit the form and verify the confirmation message.
 4. In Zoho Creator, open **RFQ Management** $\to$ **All RFQ Inquiries** and confirm that the record appears with all fields populated and correctly linked to the parent plant.
+
+---
+
+## 12. Verified Live Deployment Links
+
+| Resource | URL | Description |
+| :--- | :--- | :--- |
+| **Main Storefront** | [https://demo-60096945966.zohoecommerce.in/page/submit-rfq](https://demo-60096945966.zohoecommerce.in/page/submit-rfq) | Public Zoho Commerce B2B storefront RFQ page |
+| **Backend API** | [https://jollyrx-b2b-rfq-platform.vercel.app](https://jollyrx-b2b-rfq-platform.vercel.app) | Vercel production deployment |
+| **Health Check** | [https://jollyrx-b2b-rfq-platform.vercel.app/api/health](https://jollyrx-b2b-rfq-platform.vercel.app/api/health) | Ingestion proxy health check (`configured: true`) |
+| **RFQ API Endpoint** | `https://jollyrx-b2b-rfq-platform.vercel.app/api/rfq` | Ingestion proxy RFQ endpoint |
+| **GitHub Repository** | [https://github.com/techbydeepak/jollyrx-b2b-rfq-platform](https://github.com/techbydeepak/jollyrx-b2b-rfq-platform) | Complete source code |
+| **Creator App** | `https://creatorapp.zoho.in/deepakrathour2005/jollyrx-internal-plant-vault` | Confidential Plant Vault & RFQ records |
