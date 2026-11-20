@@ -21,3 +21,5 @@ server/package-lock.json
 Thumbs.db
 *.log
 *.tmp
+
+.vercel

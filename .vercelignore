@@ -1,0 +1,14 @@
+# Vercel Deployment Ignore
+# Never upload secrets or local documentation to Vercel builds
+.env
+.env.*
+*.env
+server/.env
+server/.env.*
+
+# Ignore docs, tests, and storefront assets from serverless function bundle
+tests/
+docs/
+zoho-commerce/
+zoho-creator/
+*.md
